@@ -3,7 +3,13 @@ from tkinter import messagebox
 import pyvisa
 import os
 import sys
-
+def resource(relative_path):
+        base_path = getattr(
+            sys,
+            '_MEIPASS',
+            os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
+icon_path = resource("eitam911.ico")
 class CustomIPDialog(tk.Toplevel):
     def __init__(self, master, initial_ip):
         super().__init__(master)
@@ -75,7 +81,7 @@ class CustomIPDialog(tk.Toplevel):
 class SignalGeneratorApp:
     def __init__(self, root):
         self.root = root
-        self.root.iconbitmap("Icons/eitam911.ico")
+        self.root.iconbitmap(icon_path)
         self.root.title("Signal Generator Controller")
         self.root.geometry("410x530")
         self.root.configure(bg="#2c2c2c")
@@ -258,9 +264,10 @@ class SignalGeneratorApp:
             self.signal_generator_address = f"TCPIP::{dialog.result}::INSTR"
             self.save_config(dialog.result)
             messagebox.showinfo("Configuration", f"Updated IP to {dialog.result}.")
-
+    
+    
 if __name__ == "__main__":
     root = tk.Tk()
-    root.iconbitmap("Icons/eitam911.ico")
+    root.iconbitmap(icon_path)
     app = SignalGeneratorApp(root)
     root.mainloop()
